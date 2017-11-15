@@ -20,7 +20,8 @@ for root, dirs, files in os.walk("all") :
         resetDirs(os.path.join("test_set",d))
         for root2, dirs2, files2 in os.walk(os.path.join(root, d)):
             for name in files2:
-                if random()>0.5:
+                if random()>0.2:
                     shutil.copy(os.path.join(root,d,name),os.path.join("train_set",d,name))
                 else:
+                    #shutil.copy(os.path.join(root,d,name),os.path.join("train_set",d,name))
                     shutil.copy(os.path.join(root,d,name),os.path.join("test_set",d,name))

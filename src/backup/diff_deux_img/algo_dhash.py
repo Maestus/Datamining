@@ -12,8 +12,8 @@ for root, dirs, files in os.walk("train_set") :
         for root2, dirs2, files2 in os.walk(os.path.join(root, d)):
             for name in files2:
 """
-width = 32
-height = 32
+width = 28
+height = 28
 
 def d_hash(image_path):
     img = Image.open(image_path)
@@ -35,4 +35,4 @@ test2 = d_hash("test2.png")
 print(diff_dhash_img(test,test001))       
 print(diff_dhash_img(test001,test003))    
 print(diff_dhash_img(test,test003))       
-print(diff_dhash_img(test0,test))
+print(diff_dhash_img(test,test))
