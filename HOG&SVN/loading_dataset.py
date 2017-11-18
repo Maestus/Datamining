@@ -13,6 +13,7 @@ def get_train_dataset(train_file_nomber) :
     num_sep = path.count(os.path.sep)
 
     target = '../dataset/'
+    os.makedirs(target)
 
     max_to_read = train_file_nomber
 
