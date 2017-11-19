@@ -1,6 +1,17 @@
 import os
 from shutil import copyfile
 import fnmatch
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+class obj(object):
+    def __init__(self, d):
+        for a, b in d.items():
+            if isinstance(b, (list, tuple)):
+               setattr(self, a, [obj(x) if isinstance(x, dict) else x for x in b])
+            else:
+               setattr(self, a, obj(b) if isinstance(b, dict) else b)
 
 def get_train_dataset(train_file_nomber) :
     # TO CHANGE
@@ -32,4 +43,25 @@ def get_train_dataset(train_file_nomber) :
             continue
 
 
-get_train_dataset(25)
+def load_dataset() :
+    path = '../dataset/'
+    Lfiles = np.array([])
+    label = '0'
+    Llabels = []
+    for root, dirs, files in os.walk(path) :
+        if fnmatch.fnmatch(root, '*train*'):
+            for name in files :
+                #print(cv2.imread(os.path.join(root, name)))
+                #Lfiles += [np.array(Image.open(os.path.join(root, name)).convert("L"))]
+                Lfiles = np.append(Lfiles, cv2.imread(os.path.join(root, name)))
+                if(label == '9'):
+                    label = chr(ord('A') + 1)
+                if(label == 'Z'):
+                    label = chr(ord('a') + 1)
+                Llabels += [label]
+                label = chr(ord(label) + 1)
+    return obj({'images' : Lfiles, 'labels' : Llabels})
+
+
+data = load_dataset()
+#print(data.images)
