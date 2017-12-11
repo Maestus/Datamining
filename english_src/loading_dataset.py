@@ -3,11 +3,18 @@ from shutil import copyfile
 import fnmatch
 import cv2
 import numpy as np
+import shutil
 import matplotlib.pyplot as plt
+import sys
+sys.path.insert(0, '../libs/')
+from common import *
 
 path_large_folder = '../by_class/'
+path_training_dataset = '../training_dataset/'
 nb_letter = 26
 nb_number = 10
+
+img_size = 40, 40
 
 def rename_dataset():
 
@@ -81,7 +88,6 @@ def rename_dataset():
 
 
 def get_train_dataset(train_file_nomber) :
-    # TO CHANGE
     # Download Full dataset : https://s3.amazonaws.com/nist-srd/SD19/by_class.zip (~1GB)
     path = os.path.normpath(path_large_folder)
 
@@ -89,19 +95,23 @@ def get_train_dataset(train_file_nomber) :
     assert os.path.isdir(path)
     num_sep = path.count(os.path.sep)
 
-    target = '../dataset/'
-    os.makedirs(target)
+    if(os.path.isdir(path_training_dataset)) :
+        shutil.rmtree(path_training_dataset)
+
+    os.makedirs(path_training_dataset)
 
     max_to_read = train_file_nomber
 
     for root, dirs, files in os.walk(path) :
         if fnmatch.fnmatch(root, '*train*'):
             print(root)
-            os.makedirs(target + root.split(os.path.sep)[-1:][0])
+            os.makedirs(path_training_dataset + root.split(os.path.sep)[-2:][0])
             max_to_read = train_file_nomber
             for name in files :
                 if(max_to_read > 0):
-                    copyfile(os.path.join(root, name), target + root.split(os.path.sep)[-1:][0] + os.path.sep + name)
+                    img = Image.open(os.path.join(root, name))
+                    img.thumbnail(img_size, Image.ANTIALIAS)
+                    img.save(path_training_dataset + root.split(os.path.sep)[-2:][0] + os.path.sep + name)
                     max_to_read -= 1
                 else:
                     break
@@ -117,7 +127,7 @@ def load_dataset() :
     for root, dirs, files in os.walk(path) :
         if fnmatch.fnmatch(root, '*train*'):
             for name in files :
-                #print(cv2.imread(os.path.join(root, name)))
+                print(os.path.join(root, name))
                 #Lfiles += [np.array(Image.open(os.path.join(root, name)).convert("L"))]
                 Lfiles = np.append(Lfiles, cv2.imread(os.path.join(root, name)))
                 if(label == '9'):
@@ -129,6 +139,6 @@ def load_dataset() :
     return obj({'images' : Lfiles, 'labels' : Llabels})
 
 #rename_dataset()
-#get_train_dataset(100)
+#get_train_dataset(1000)
 #data = load_dataset()
 #print(data.images)
