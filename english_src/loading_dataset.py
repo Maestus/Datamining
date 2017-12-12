@@ -5,10 +5,12 @@
 
 import os
 from shutil import copyfile
-from sklearn import datasets, svm, metrics
+from sklearn import datasets, svm
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.externals import joblib
 import fnmatch
 import cv2
-from skimage import data
+import skimage.data as ski
 import numpy as np
 import shutil
 import matplotlib.pyplot as plt
@@ -17,7 +19,9 @@ sys.path.insert(0, '../libs/')
 from common import *
 
 path_large_folder = '../by_class/'
-path_training_dataset = '../training_dataset/'
+load_training_dataset = '../training_dataset/'
+load_test_dataset = '../test_dataset/'
+
 nb_letter = 26
 nb_number = 10
 img_size = 40, 40
@@ -93,115 +97,123 @@ def rename_dataset():
         init_f += 1
 
 
-def get_train_dataset(train_file_nomber) :
+def get_dataset(train_file_nomber, training = True) :
     path = os.path.normpath(path_large_folder)
 
     path = path.rstrip(os.path.sep)
     assert os.path.isdir(path)
     num_sep = path.count(os.path.sep)
 
-    if(os.path.isdir(path_training_dataset)) :
-        shutil.rmtree(path_training_dataset)
-
-    os.makedirs(path_training_dataset)
+    if training :
+        if(os.path.isdir(load_training_dataset)) :
+            shutil.rmtree(load_training_dataset)
+        os.makedirs(load_training_dataset)
+    else :
+        if(os.path.isdir(load_test_dataset)) :
+            shutil.rmtree(load_test_dataset)
+        os.makedirs(load_test_dataset)
 
     max_to_read = train_file_nomber
 
     for root, dirs, files in os.walk(path) :
-        if fnmatch.fnmatch(root, '*train*'):
-            print(root)
-            os.makedirs(path_training_dataset + root.split(os.path.sep)[-2:][0])
-            max_to_read = train_file_nomber
-            for name in files :
-                if(max_to_read > 0):
-                    img = Image.open(os.path.join(root, name))
-                    img.thumbnail(img_size, Image.ANTIALIAS)
-                    img.save(path_training_dataset + root.split(os.path.sep)[-2:][0] + os.path.sep + name)
-                    max_to_read -= 1
-                else:
-                    break
-        else:
-            continue
+        if training :
+            if fnmatch.fnmatch(root, '*train*'):
+                print(root)
+                os.makedirs(load_training_dataset + root.split(os.path.sep)[-2:][0])
+                max_to_read = train_file_nomber
+                for name in files :
+                    if(max_to_read > 0):
+                        img = Image.open(os.path.join(root, name))
+                        img.thumbnail(img_size, Image.ANTIALIAS)
+                        img.save(load_training_dataset + root.split(os.path.sep)[-2:][0] + os.path.sep + name)
+                        max_to_read -= 1
+                    else:
+                        break
+            else:
+                continue
+        else :
+            if not fnmatch.fnmatch(root.split(os.path.sep)[-2:][0], 'by_class') and not fnmatch.fnmatch(root.split(os.path.sep)[-2:][0], '*train*') and not fnmatch.fnmatch(root.split(os.path.sep)[-2:][0], '..') and not fnmatch.fnmatch(root.split(os.path.sep)[-2:][0], '.'):
+                print(load_test_dataset + root)
+                if(not os.path.isdir(load_test_dataset + root.split(os.path.sep)[-2:][0])) :
+                    os.makedirs(load_test_dataset + root.split(os.path.sep)[-2:][0])
+                max_to_read = train_file_nomber
+                for name in files :
+                    if not fnmatch.fnmatch(name, '*.mit') :
+                        if(max_to_read > 0):
+                            img = Image.open(os.path.join(root, name))
+                            img.thumbnail(img_size, Image.ANTIALIAS)
+                            img.save(load_test_dataset + root.split(os.path.sep)[-2:][0] + os.path.sep + name)
+                            max_to_read -= 1
+                        else:
+                            break
 
-def load_dataset():
-    #images = []
+
+
+def load_dataset(path_training_dataset, training = True):
 
     h, w = img_size
-    images = np.zeros((10*(nb_letter*2+nb_number), h, w, 3), dtype=np.float32)
+
+    images = np.zeros((400*(nb_letter*2+nb_number), h, w, 3), dtype=np.float32)
+
     labels = []
     im_nb = 0
     for root, dirs, files in os.walk(path_training_dataset) :
         for d in dirs :
-            #labels += [d]
-            #d_images = []
             for r, dd, imgs  in os.walk(path_training_dataset + str(d)) :
-                #feature = np.array([data.imread(path_training_dataset + str(d) + os.path.sep + str(img)) for img in imgs])
                 for img in imgs :
                     labels += [d]
-                    #d_images += [io.imread(path_training_dataset + str(d) + os.path.sep + str(img))]
-                    img_content = data.imread(path_training_dataset + str(d) + os.path.sep + str(img)).astype(np.float64)
-                    #img_content = img_content.reshape(len(img_content), -1).astype(np.float64)
-                    #img_content = img_content.flatten()
-                    #print(img_content.shape)
+                    img_content = ski.imread(path_training_dataset + str(d) + os.path.sep + str(img)).astype(np.float32)
                     face = np.asarray(img_content, dtype=np.float32)
                     face /= 255.0 # scale uint8 coded colors to the [0.0, 1.0] floats
-
                     images[im_nb, ...] = face
-
                     im_nb += 1
-                    #images.append(img_content)
-                #if(len(d_images) > 0) :
-                    #images += [d_images]
 
     return images, labels
 
+if not os.path.isfile('classifier.pkl') :
 
-#rename_dataset()
-#get_train_dataset(10)
-images, labels = load_dataset()
-#images = images.reshape(len(images), -1).astype(np.float64)
-print(images)
+    get_dataset(400)
 
-nx = images.shape
-print(str(nx))
+    get_dataset(50, False)
 
-print(len(labels))
+    images, labels = load_dataset("../training_dataset/")
 
-images_and_labels = list(zip(images, labels))
-for index, (image, label) in enumerate(images_and_labels[:4]):
-    plt.subplot(2, 4, index + 1)
+    data = images.reshape(len(images), -1)
+
+    classifier = svm.SVC(gamma=0.001)
+
+    print("classifier set\n")
+
+    classifier.fit(data, labels)
+
+    print("fitted\n")
+
+    joblib.dump(classifier, 'classifier.pkl')
+
+    print("file dumped\n")
+
+else :
+
+    classifier = joblib.load('classifier.pkl')
+
+print("process prediction")
+
+images_test, labels_test = load_dataset("../test_dataset/", False)
+
+data_test = images_test.reshape(len(images_test), -1)
+
+expected = labels_test
+predicted = classifier.predict(data_test)
+
+accuracy = accuracy_score(expected,predicted)
+
+print("****************** average_score : " + str(accuracy))
+
+images_and_predictions = list(zip(images_test, predicted))
+for index, (image, prediction) in enumerate(images_and_predictions[80:120]):
+    plt.subplot(2, 20, index + 1)
     plt.axis('off')
     plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
-    plt.title("Training: " + str(label))
-
-
-# To apply a classifier on this data, we need to flatten the image, to
-# turn the data in a (samples, feature) matrix:
-n_samples = len(images)
-nx = images.shape
-print(str(nx))
-
-data = images.reshape(len(images), -1)
-nx = data.shape
-print("end " + str(nx))
-
-# Create a classifier: a support vector classifier
-classifier = svm.SVC(gamma=0.001)
-
-# We learn the digits on the first half of the digits
-classifier.fit(data[:n_samples], labels[:n_samples])
-
-# Now predict the value of the digit on the second half:
-expected = labels[n_samples // 2:]
-predicted = classifier.predict(data[n_samples // 2:])
-
-print(predicted)
-
-images_and_predictions = list(zip(images[n_samples // 2:], predicted))
-for index, (image, prediction) in enumerate(images_and_predictions[:4]):
-    plt.subplot(2, 4, index + 5)
-    plt.axis('off')
-    plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
-    plt.title("Prediction: " + str(prediction))
+    plt.title(str(prediction))
 
 plt.show()
