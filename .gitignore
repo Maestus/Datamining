@@ -1,2 +1,4 @@
 /train_set/*
 /test_set/*
+by_class/*
+dataset/*
