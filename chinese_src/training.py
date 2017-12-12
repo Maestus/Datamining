@@ -19,10 +19,10 @@
 """
 from common import *
 
-if len(sys.argv) != 2 :
-	print("The arg1 must be a path of train_set:")
-	print("./train_to_txt path_of_train_set")
-	exit(-1)
+
+
+if len(sys.argv) == 2 :
+	all_path = sys.argv[1]
 
 all_data = []
 total = 0
@@ -39,7 +39,7 @@ def reinforce(image,label,all_data):
 		all_data.append((label,get_feature_image(image_reinforce)))
 
 
-for root,dirs,files in os.walk(sys.argv[1]):
+for root,dirs,files in os.walk(all_path):
 	for d in dirs:
 		total +=1
 		print("now in "+d+" already treated:"+str(total))

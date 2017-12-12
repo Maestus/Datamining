@@ -1,0 +1,320 @@
+======SVC(kernel='linear')   ====================
+     chloe : 70%    14/20
+   etienne : 70%    14/20
+    chensi : 75%    15/20
+     marie : 65%    13/20
+ wangqiang : 85%    17/20
+      omar : 90%    18/20
+       lea : 55%    11/20
+    xiang2 : 75%    15/20
+ liangguan : 65%    13/20
+    quincy : 75%    15/20
+     yizhe : 70%    14/20
+       pin : 65%    13/20
+   xiangli : 65%    13/20
+     alice : 45%    9/20
+  chunlong : 95%    19/20
+    yuxuan : 55%    11/20
+        FA : 30%    6/20
+        AC : 65%    13/20
+****************** average_score : 67%
+======SVC(kernel='poly')   ====================
+     chloe : 75%    15/20
+   etienne : 65%    13/20
+    chensi : 80%    16/20
+     marie : 70%    14/20
+ wangqiang : 95%    19/20
+      omar : 95%    19/20
+       lea : 50%    10/20
+    xiang2 : 85%    17/20
+ liangguan : 70%    14/20
+    quincy : 80%    16/20
+     yizhe : 80%    16/20
+       pin : 65%    13/20
+   xiangli : 65%    13/20
+     alice : 60%    12/20
+  chunlong : 95%    19/20
+    yuxuan : 60%    12/20
+        FA : 45%    9/20
+        AC : 80%    16/20
+****************** average_score : 73%
+======DecisionTreeClassifier     ====================
+     chloe : 45%    9/20
+   etienne : 50%    10/20
+    chensi : 60%    12/20
+     marie : 50%    10/20
+ wangqiang : 65%    13/20
+      omar : 60%    12/20
+       lea : 45%    9/20
+    xiang2 : 45%    9/20
+ liangguan : 45%    9/20
+    quincy : 60%    12/20
+     yizhe : 45%    9/20
+       pin : 45%    9/20
+   xiangli : 40%    8/20
+     alice : 45%    9/20
+  chunlong : 65%    13/20
+    yuxuan : 50%    10/20
+        FA : 30%    6/20
+        AC : 45%    9/20
+****************** average_score : 49%
+======LogisticRegression     ====================
+     chloe : 30%    6/20
+   etienne : 40%    8/20
+    chensi : 55%    11/20
+     marie : 40%    8/20
+ wangqiang : 70%    14/20
+      omar : 70%    14/20
+       lea : 30%    6/20
+    xiang2 : 50%    10/20
+ liangguan : 30%    6/20
+    quincy : 70%    14/20
+     yizhe : 55%    11/20
+       pin : 45%    9/20
+   xiangli : 35%    7/20
+     alice : 40%    8/20
+  chunlong : 55%    11/20
+    yuxuan : 45%    9/20
+        FA : 10%    2/20
+        AC : 35%    7/20
+****************** average_score : 44%
+======KNeighborsClassifier (n_neighbors = 1) ====================
+     chloe : 70%    14/20
+   etienne : 60%    12/20
+    chensi : 70%    14/20
+     marie : 65%    13/20
+ wangqiang : 85%    17/20
+      omar : 85%    17/20
+       lea : 65%    13/20
+    xiang2 : 95%    19/20
+ liangguan : 85%    17/20
+    quincy : 80%    16/20
+     yizhe : 85%    17/20
+       pin : 75%    15/20
+   xiangli : 70%    14/20
+     alice : 70%    14/20
+  chunlong : 90%    18/20
+    yuxuan : 65%    13/20
+        FA : 55%    11/20
+        AC : 85%    17/20
+****************** average_score : 75%
+======KNeighborsClassifier (n_neighbors = 3) ====================
+     chloe : 70%    14/20
+   etienne : 65%    13/20
+    chensi : 65%    13/20
+     marie : 65%    13/20
+ wangqiang : 80%    16/20
+      omar : 80%    16/20
+       lea : 60%    12/20
+    xiang2 : 90%    18/20
+ liangguan : 85%    17/20
+    quincy : 75%    15/20
+     yizhe : 90%    18/20
+       pin : 65%    13/20
+   xiangli : 70%    14/20
+     alice : 65%    13/20
+  chunlong : 85%    17/20
+    yuxuan : 60%    12/20
+        FA : 65%    13/20
+        AC : 80%    16/20
+****************** average_score : 73%
+======KNeighborsClassifier (n_neighbors = 5) ====================
+     chloe : 70%    14/20
+   etienne : 65%    13/20
+    chensi : 65%    13/20
+     marie : 70%    14/20
+ wangqiang : 85%    17/20
+      omar : 75%    15/20
+       lea : 65%    13/20
+    xiang2 : 85%    17/20
+ liangguan : 85%    17/20
+    quincy : 75%    15/20
+     yizhe : 85%    17/20
+       pin : 70%    14/20
+   xiangli : 70%    14/20
+     alice : 65%    13/20
+  chunlong : 85%    17/20
+    yuxuan : 60%    12/20
+        FA : 45%    9/20
+        AC : 75%    15/20
+****************** average_score : 71%
+======KNeighborsClassifier (n_neighbors = 7) ====================
+     chloe : 65%    13/20
+   etienne : 65%    13/20
+    chensi : 65%    13/20
+     marie : 55%    11/20
+ wangqiang : 85%    17/20
+      omar : 80%    16/20
+       lea : 60%    12/20
+    xiang2 : 85%    17/20
+ liangguan : 80%    16/20
+    quincy : 75%    15/20
+     yizhe : 80%    16/20
+       pin : 70%    14/20
+   xiangli : 60%    12/20
+     alice : 70%    14/20
+  chunlong : 85%    17/20
+    yuxuan : 60%    12/20
+        FA : 45%    9/20
+        AC : 80%    16/20
+****************** average_score : 70%
+======KNeighborsClassifier (n_neighbors = 9) ====================
+     chloe : 60%    12/20
+   etienne : 60%    12/20
+    chensi : 65%    13/20
+     marie : 50%    10/20
+ wangqiang : 80%    16/20
+      omar : 75%    15/20
+       lea : 60%    12/20
+    xiang2 : 80%    16/20
+ liangguan : 75%    15/20
+    quincy : 75%    15/20
+     yizhe : 80%    16/20
+       pin : 70%    14/20
+   xiangli : 65%    13/20
+     alice : 70%    14/20
+  chunlong : 85%    17/20
+    yuxuan : 60%    12/20
+        FA : 45%    9/20
+        AC : 75%    15/20
+****************** average_score : 68%
+======KNeighborsClassifier (n_neighbors = 11) ====================
+     chloe : 60%    12/20
+   etienne : 55%    11/20
+    chensi : 65%    13/20
+     marie : 50%    10/20
+ wangqiang : 80%    16/20
+      omar : 75%    15/20
+       lea : 65%    13/20
+    xiang2 : 75%    15/20
+ liangguan : 75%    15/20
+    quincy : 75%    15/20
+     yizhe : 80%    16/20
+       pin : 70%    14/20
+   xiangli : 70%    14/20
+     alice : 70%    14/20
+  chunlong : 80%    16/20
+    yuxuan : 60%    12/20
+        FA : 45%    9/20
+        AC : 65%    13/20
+****************** average_score : 67%
+======RandomForestClassifier (n_estimators = 100)  ====================
+     chloe : 70%    14/20
+   etienne : 55%    11/20
+    chensi : 75%    15/20
+     marie : 60%    12/20
+ wangqiang : 75%    15/20
+      omar : 95%    19/20
+       lea : 65%    13/20
+    xiang2 : 70%    14/20
+ liangguan : 65%    13/20
+    quincy : 75%    15/20
+     yizhe : 75%    15/20
+       pin : 60%    12/20
+   xiangli : 75%    15/20
+     alice : 60%    12/20
+  chunlong : 85%    17/20
+    yuxuan : 70%    14/20
+        FA : 35%    7/20
+        AC : 65%    13/20
+****************** average_score : 68%
+======RandomForestClassifier (n_estimators = 300)  ====================
+     chloe : 70%    14/20
+   etienne : 55%    11/20
+    chensi : 80%    16/20
+     marie : 55%    11/20
+ wangqiang : 80%    16/20
+      omar : 90%    18/20
+       lea : 60%    12/20
+    xiang2 : 65%    13/20
+ liangguan : 75%    15/20
+    quincy : 75%    15/20
+     yizhe : 90%    18/20
+       pin : 65%    13/20
+   xiangli : 80%    16/20
+     alice : 60%    12/20
+  chunlong : 90%    18/20
+    yuxuan : 65%    13/20
+        FA : 35%    7/20
+        AC : 60%    12/20
+****************** average_score : 69%
+======RandomForestClassifier (n_estimators = 500)  ====================
+     chloe : 65%    13/20
+   etienne : 60%    12/20
+    chensi : 75%    15/20
+     marie : 55%    11/20
+ wangqiang : 80%    16/20
+      omar : 90%    18/20
+       lea : 65%    13/20
+    xiang2 : 70%    14/20
+ liangguan : 70%    14/20
+    quincy : 80%    16/20
+     yizhe : 80%    16/20
+       pin : 65%    13/20
+   xiangli : 80%    16/20
+     alice : 60%    12/20
+  chunlong : 85%    17/20
+    yuxuan : 65%    13/20
+        FA : 35%    7/20
+        AC : 60%    12/20
+****************** average_score : 68%
+======RandomForestClassifier (n_estimators = 700)  ====================
+     chloe : 65%    13/20
+   etienne : 60%    12/20
+    chensi : 75%    15/20
+     marie : 65%    13/20
+ wangqiang : 80%    16/20
+      omar : 90%    18/20
+       lea : 70%    14/20
+    xiang2 : 70%    14/20
+ liangguan : 65%    13/20
+    quincy : 80%    16/20
+     yizhe : 80%    16/20
+       pin : 65%    13/20
+   xiangli : 80%    16/20
+     alice : 60%    12/20
+  chunlong : 85%    17/20
+    yuxuan : 60%    12/20
+        FA : 35%    7/20
+        AC : 60%    12/20
+****************** average_score : 69%
+======RandomForestClassifier (n_estimators = 900)  ====================
+     chloe : 65%    13/20
+   etienne : 60%    12/20
+    chensi : 75%    15/20
+     marie : 60%    12/20
+ wangqiang : 80%    16/20
+      omar : 95%    19/20
+       lea : 70%    14/20
+    xiang2 : 70%    14/20
+ liangguan : 70%    14/20
+    quincy : 80%    16/20
+     yizhe : 80%    16/20
+       pin : 70%    14/20
+   xiangli : 75%    15/20
+     alice : 60%    12/20
+  chunlong : 85%    17/20
+    yuxuan : 70%    14/20
+        FA : 30%    6/20
+        AC : 60%    12/20
+****************** average_score : 69%
+===========Algo XiangLI==================
+     chloe :  60%
+   etienne :  55%
+    chensi :  70%
+     marie :  70%
+ wangqiang :  80%
+      omar :  75%
+       lea :  60%
+    xiang2 :  95%
+ liangguan :  60%
+    quincy :  90%
+     yizhe :  90%
+       pin :  80%
+   xiangli :  85%
+     alice :  60%
+  chunlong :  75%
+    yuxuan :  70%
+        FA :  65%
+        AC :  70%
+************* average_accuracy : 72%
