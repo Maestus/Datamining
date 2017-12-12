@@ -1,7 +1,14 @@
+
+
+# Download Full dataset : https://s3.amazonaws.com/nist-srd/SD19/by_class.zip (~1GB)
+
+
 import os
 from shutil import copyfile
+from sklearn import datasets, svm, metrics
 import fnmatch
 import cv2
+from skimage import data
 import numpy as np
 import shutil
 import matplotlib.pyplot as plt
@@ -13,7 +20,6 @@ path_large_folder = '../by_class/'
 path_training_dataset = '../training_dataset/'
 nb_letter = 26
 nb_number = 10
-
 img_size = 40, 40
 
 def rename_dataset():
@@ -88,7 +94,6 @@ def rename_dataset():
 
 
 def get_train_dataset(train_file_nomber) :
-    # Download Full dataset : https://s3.amazonaws.com/nist-srd/SD19/by_class.zip (~1GB)
     path = os.path.normpath(path_large_folder)
 
     path = path.rstrip(os.path.sep)
@@ -118,27 +123,85 @@ def get_train_dataset(train_file_nomber) :
         else:
             continue
 
+def load_dataset():
+    #images = []
 
-def load_dataset() :
-    path = '../dataset/'
-    Lfiles = np.array([])
-    label = '0'
-    Llabels = []
-    for root, dirs, files in os.walk(path) :
-        if fnmatch.fnmatch(root, '*train*'):
-            for name in files :
-                print(os.path.join(root, name))
-                #Lfiles += [np.array(Image.open(os.path.join(root, name)).convert("L"))]
-                Lfiles = np.append(Lfiles, cv2.imread(os.path.join(root, name)))
-                if(label == '9'):
-                    label = chr(ord('A') + 1)
-                if(label == 'Z'):
-                    label = chr(ord('a') + 1)
-                Llabels += [label]
-                label = chr(ord(label) + 1)
-    return obj({'images' : Lfiles, 'labels' : Llabels})
+    h, w = img_size
+    images = np.zeros((10*(nb_letter*2+nb_number), h, w, 3), dtype=np.float32)
+    labels = []
+    im_nb = 0
+    for root, dirs, files in os.walk(path_training_dataset) :
+        for d in dirs :
+            #labels += [d]
+            #d_images = []
+            for r, dd, imgs  in os.walk(path_training_dataset + str(d)) :
+                #feature = np.array([data.imread(path_training_dataset + str(d) + os.path.sep + str(img)) for img in imgs])
+                for img in imgs :
+                    labels += [d]
+                    #d_images += [io.imread(path_training_dataset + str(d) + os.path.sep + str(img))]
+                    img_content = data.imread(path_training_dataset + str(d) + os.path.sep + str(img)).astype(np.float64)
+                    #img_content = img_content.reshape(len(img_content), -1).astype(np.float64)
+                    #img_content = img_content.flatten()
+                    #print(img_content.shape)
+                    face = np.asarray(img_content, dtype=np.float32)
+                    face /= 255.0 # scale uint8 coded colors to the [0.0, 1.0] floats
+
+                    images[im_nb, ...] = face
+
+                    im_nb += 1
+                    #images.append(img_content)
+                #if(len(d_images) > 0) :
+                    #images += [d_images]
+
+    return images, labels
+
 
 #rename_dataset()
-#get_train_dataset(1000)
-#data = load_dataset()
-#print(data.images)
+#get_train_dataset(10)
+images, labels = load_dataset()
+#images = images.reshape(len(images), -1).astype(np.float64)
+print(images)
+
+nx = images.shape
+print(str(nx))
+
+print(len(labels))
+
+images_and_labels = list(zip(images, labels))
+for index, (image, label) in enumerate(images_and_labels[:4]):
+    plt.subplot(2, 4, index + 1)
+    plt.axis('off')
+    plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
+    plt.title("Training: " + str(label))
+
+
+# To apply a classifier on this data, we need to flatten the image, to
+# turn the data in a (samples, feature) matrix:
+n_samples = len(images)
+nx = images.shape
+print(str(nx))
+
+data = images.reshape(len(images), -1)
+nx = data.shape
+print("end " + str(nx))
+
+# Create a classifier: a support vector classifier
+classifier = svm.SVC(gamma=0.001)
+
+# We learn the digits on the first half of the digits
+classifier.fit(data[:n_samples], labels[:n_samples])
+
+# Now predict the value of the digit on the second half:
+expected = labels[n_samples // 2:]
+predicted = classifier.predict(data[n_samples // 2:])
+
+print(predicted)
+
+images_and_predictions = list(zip(images[n_samples // 2:], predicted))
+for index, (image, prediction) in enumerate(images_and_predictions[:4]):
+    plt.subplot(2, 4, index + 5)
+    plt.axis('off')
+    plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
+    plt.title("Prediction: " + str(prediction))
+
+plt.show()
