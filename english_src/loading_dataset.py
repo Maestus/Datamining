@@ -153,7 +153,7 @@ def load_dataset(path_training_dataset, training = True):
 
     h, w = img_size
 
-    images = np.zeros((400*(nb_letter*2+nb_number), h, w, 3), dtype=np.float32)
+    images = np.zeros((160*(nb_letter*2+nb_number), h, w, 3), dtype=np.float32)
 
     labels = []
     im_nb = 0
@@ -169,51 +169,3 @@ def load_dataset(path_training_dataset, training = True):
                     im_nb += 1
 
     return images, labels
-
-if not os.path.isfile('classifier.pkl') :
-
-    get_dataset(400)
-
-    get_dataset(50, False)
-
-    images, labels = load_dataset("../training_dataset/")
-
-    data = images.reshape(len(images), -1)
-
-    classifier = svm.SVC(gamma=0.001)
-
-    print("classifier set\n")
-
-    classifier.fit(data, labels)
-
-    print("fitted\n")
-
-    joblib.dump(classifier, 'classifier.pkl')
-
-    print("file dumped\n")
-
-else :
-
-    classifier = joblib.load('classifier.pkl')
-
-print("process prediction")
-
-images_test, labels_test = load_dataset("../test_dataset/", False)
-
-data_test = images_test.reshape(len(images_test), -1)
-
-expected = labels_test
-predicted = classifier.predict(data_test)
-
-accuracy = accuracy_score(expected,predicted)
-
-print("****************** average_score : " + str(accuracy))
-
-images_and_predictions = list(zip(images_test, predicted))
-for index, (image, prediction) in enumerate(images_and_predictions[80:120]):
-    plt.subplot(2, 20, index + 1)
-    plt.axis('off')
-    plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
-    plt.title(str(prediction))
-
-plt.show()
