@@ -1,13 +1,4 @@
-
-
-# Download Full dataset : https://s3.amazonaws.com/nist-srd/SD19/by_class.zip (~1GB)
-
-
 import os
-from shutil import copyfile
-from sklearn import datasets, svm
-from sklearn.metrics import accuracy_score, classification_report
-from sklearn.externals import joblib
 import fnmatch
 import cv2
 import skimage.data as ski
@@ -149,11 +140,11 @@ def get_dataset(train_file_nomber, training = True) :
 
 
 
-def load_dataset(path_training_dataset, training = True):
+def load_dataset(path_training_dataset, nb_img_by_char, training = True):
 
     h, w = img_size
 
-    images = np.zeros((160*(nb_letter*2+nb_number), h, w, 3), dtype=np.float32)
+    images = np.zeros((nb_img_by_char*(nb_letter*2+nb_number), h, w, 3), dtype=np.float32)
 
     labels = []
     im_nb = 0
@@ -164,7 +155,7 @@ def load_dataset(path_training_dataset, training = True):
                     labels += [d]
                     img_content = ski.imread(path_training_dataset + str(d) + os.path.sep + str(img)).astype(np.float32)
                     face = np.asarray(img_content, dtype=np.float32)
-                    face /= 255.0 # scale uint8 coded colors to the [0.0, 1.0] floats
+                    face /= 255.0
                     images[im_nb, ...] = face
                     im_nb += 1
 
